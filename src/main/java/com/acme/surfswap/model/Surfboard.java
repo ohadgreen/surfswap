@@ -6,13 +6,16 @@ import com.acme.surfswap.enums.OwnershipType;
 import com.acme.surfswap.enums.SurfboardType;
 import lombok.*;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "surfboards")
 public class Surfboard extends Item {
+    @Enumerated(value = EnumType.STRING)
     private SurfboardType surfboardType;
     private String brand;
     private String model;
@@ -20,6 +23,14 @@ public class Surfboard extends Item {
     private double width;
     private double thickness;
     private double volume;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "store_id")
+    private Store store;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
 
     public Surfboard(SurfboardType surfboardType, String brand, String model, double length, double width, double thickness, double volume) {
         this.surfboardType = surfboardType;

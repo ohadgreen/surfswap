@@ -11,15 +11,11 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @MappedSuperclass
-@Entity
 public class Item extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    private Person owner;
+    private Owner owner;
 
-    @ManyToOne
-    @JoinColumn(name = "store_id")
-    private Store store;
     private ItemAvailability itemAvailability;
     private ItemStatus itemStatus;
     private OwnershipType ownershipType;

@@ -2,6 +2,7 @@ package com.acme.surfswap.services;
 
 import com.acme.surfswap.model.Owner;
 import com.acme.surfswap.repositories.OwnerRepository;
+import com.acme.surfswap.repositories.SurfboardRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -10,9 +11,11 @@ import java.util.Set;
 @Service
 public class OwnerServiceImpl implements OwnerService {
     private final OwnerRepository ownerRepository;
+    private final SurfboardRepository surfboardRepository;
 
-    public OwnerServiceImpl(OwnerRepository ownerRepository) {
+    public OwnerServiceImpl(OwnerRepository ownerRepository, SurfboardRepository surfboardRepository) {
         this.ownerRepository = ownerRepository;
+        this.surfboardRepository = surfboardRepository;
     }
 
     @Override

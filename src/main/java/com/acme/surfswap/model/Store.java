@@ -18,8 +18,8 @@ public class Store extends BaseEntity {
     private String name;
     private String address;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
-    private Set<Item> items = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Surfboard> surfboards = new HashSet<>();
 
     public Store(String name, String address) {
         this.name = name;
