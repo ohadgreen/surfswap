@@ -25,4 +25,10 @@ public class Store extends BaseEntity {
         this.name = name;
         this.address = address;
     }
+
+    public Store addSurboard(Surfboard surfboard) {
+        surfboard.setStore(this);
+        this.surfboards.add(surfboard);
+        return this;
+    }
 }

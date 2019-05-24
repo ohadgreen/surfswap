@@ -37,22 +37,23 @@ public class InitDataLoad implements CommandLineRunner
 
         Owner owner1 = new Owner("John", "Doe", "1234-5678");
         Owner owner2 = new Owner("Alice", "Armon", "1234-9876");
+        Owner owner3 = new Owner("bob", "Brown", "1234-9999");
 
         Surfboard longboard = new Surfboard(SurfboardType.LONG_BOARD, "Hurley", "Ingleby", 9.0, 22, 2.5, 52.9 );
-        longboard.setOwner(owner1);
-        longboard.setStore(acadia);
+        owner1.addSurfboard(longboard);
+        acadia.addSurboard(longboard);
         Surfboard shortboard1 = new Surfboard(SurfboardType.SHORT_BOARD, "Al Merrick", "Happy", 5.6, 18.25, 2.2, 22.7 );
-        shortboard1.setOwner(owner2);
-        shortboard1.setStore(acadia);
+        owner2.addSurfboard(shortboard1);
+        acadia.addSurboard(shortboard1);
 
-        owner1.getSurfboards().add(longboard);
-        owner2.getSurfboards().add(shortboard1);
+        Surfboard softboard = new Surfboard(SurfboardType.SOFT_BOARD, "De Hui", "Soft", 8.0, 30.0, 5.0, 62.2 );
+        owner3.addSurfboard(softboard);
+        acadia.addSurboard(softboard);
 
         ownerService.save(owner1);
         ownerService.save(owner2);
+        ownerService.save(owner3);
 
-        acadia.getSurfboards().add(longboard);
-        acadia.getSurfboards().add(shortboard1);
         storeService.save(acadia);
     }
 }

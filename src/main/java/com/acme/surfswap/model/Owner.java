@@ -25,4 +25,10 @@ public class Owner extends Person {
     public Owner(String firstName, String lastName, String phoneNumber) {
         super(firstName, lastName, phoneNumber);
     }
+
+    public Owner addSurfboard(Surfboard surfboard) {
+        surfboard.setOwner(this);
+        this.surfboards.add(surfboard);
+        return this;
+    }
 }

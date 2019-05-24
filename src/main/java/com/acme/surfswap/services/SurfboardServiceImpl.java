@@ -1,11 +1,13 @@
 package com.acme.surfswap.services;
 
+import com.acme.surfswap.model.Store;
 import com.acme.surfswap.model.Surfboard;
 import com.acme.surfswap.repositories.SurfboardRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.StreamSupport;
 
 @Service
 public class SurfboardServiceImpl implements SurfboardService {
@@ -19,6 +21,15 @@ public class SurfboardServiceImpl implements SurfboardService {
     public Set<Surfboard> findAll() {
         Set<Surfboard> surfboardSet = new HashSet<>();
         surfboardRepository.findAll().forEach(surfboardSet::add);
+        return surfboardSet;
+    }
+
+    public Set<Surfboard> findByStore(Long storeId) {
+        Set<Surfboard> surfboardSet = new HashSet<>();
+        Iterable<Surfboard> allSurfboards = surfboardRepository.findAll();
+        StreamSupport.stream(allSurfboards.spliterator(), false)
+                .filter(surfboard -> surfboard.getStore().getId() == storeId)
+                .forEach(surfboard -> surfboardSet.add(surfboard));
         return surfboardSet;
     }
 
