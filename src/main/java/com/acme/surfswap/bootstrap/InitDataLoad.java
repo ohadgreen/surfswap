@@ -3,6 +3,7 @@ package com.acme.surfswap.bootstrap;
 import com.acme.surfswap.enums.SurfboardType;
 import com.acme.surfswap.model.Owner;
 import com.acme.surfswap.model.Store;
+import com.acme.surfswap.model.StoreAdmin;
 import com.acme.surfswap.model.Surfboard;
 import com.acme.surfswap.services.OwnerService;
 import com.acme.surfswap.services.StoreService;
@@ -33,6 +34,8 @@ public class InitDataLoad implements CommandLineRunner
 
     private void initData() {
         Store acadia = new Store("Acadia", "1 Hayam St.");
+        StoreAdmin acadiaAdmin = new StoreAdmin("Dani", "Acadia", "333-4567");
+        acadia.addStoreAdmin(acadiaAdmin);
         storeService.save(acadia);
 
         Owner owner1 = new Owner("John", "Doe", "1234-5678");

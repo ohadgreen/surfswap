@@ -20,5 +20,4 @@ public class Item extends BaseEntity {
     private ItemStatus itemStatus;
     private OwnershipType ownershipType;
     private Integer rentRate;
-
 }

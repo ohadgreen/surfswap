@@ -3,13 +3,16 @@ package com.acme.surfswap.controllers;
 import com.acme.surfswap.model.Store;
 import com.acme.surfswap.model.Surfboard;
 import com.acme.surfswap.services.SurfboardServiceImpl;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
+@Slf4j
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class SurfboardController {
 
     private final SurfboardServiceImpl surfboardService;
@@ -18,14 +21,26 @@ public class SurfboardController {
         this.surfboardService = surfboardService;
     }
 
-    @GetMapping("/boards/all")
+    @GetMapping("api/boards/all")
     public Set<Surfboard> allBoards() {
         return surfboardService.findAll();
     }
 
-    @GetMapping("/boardsbystore/{storeId}")
-    public Set<Surfboard> allBoardsByStore(Long storeId) {
-        System.out.println("storeId = " + storeId);
-        return surfboardService.findByStore(storeId);
+    @GetMapping("api/boards/bystore/{storeid}")
+    public Set<Surfboard> boardsByStore(@PathVariable long storeid) {
+        log.debug("storeid: " + storeid );
+        return surfboardService.findByStore(storeid);
+    }
+
+    @GetMapping("api/boards/byowner")
+    public Set<Surfboard> boardsByOwner(@RequestParam("ownerId") Long ownerId) {
+        log.debug("Owner id: " + ownerId );
+        return surfboardService.findByOwner(ownerId);
+    }
+
+    @GetMapping("api/boards/byid")
+    public Surfboard boardById(@RequestParam("boardId") Long boardId) {
+        log.debug("board id: " + boardId );
+        return surfboardService.findById(boardId);
     }
 }
