@@ -43,4 +43,9 @@ public class SurfboardController {
         log.debug("board id: " + boardId );
         return surfboardService.findById(boardId);
     }
+
+    @GetMapping("/")
+    public void boardsControllerTest() {
+        log.debug("*** Surfboard controller");
+    }
 }

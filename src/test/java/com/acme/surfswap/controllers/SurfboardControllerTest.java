@@ -6,16 +6,21 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class SurfboardControllerTest {
 
     SurfboardController surfboardController;
+//    private MockMvc mockMvc;
 
     @Mock
     SurfboardServiceImpl surfboardService;
@@ -24,6 +29,7 @@ public class SurfboardControllerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         surfboardController = new SurfboardController(surfboardService);
+//        this.mockMvc = MockMvcBuilders.standaloneSetup(this.surfboardController).build();
     }
 
     @Test
@@ -42,5 +48,12 @@ public class SurfboardControllerTest {
 
         when(surfboardService.findById(any())).thenReturn(surfboard);
         assertEquals(surfboard, surfboardController.boardById(1L));
+    }
+
+    @Test
+    public void testMockMvc() throws Exception {
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(surfboardController).build();
+        mockMvc.perform(get("/api/boards/all"))
+                .andExpect(status().isOk());
     }
 }
