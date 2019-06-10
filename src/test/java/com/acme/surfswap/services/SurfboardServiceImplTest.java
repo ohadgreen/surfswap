@@ -3,16 +3,15 @@ package com.acme.surfswap.services;
 import com.acme.surfswap.model.Surfboard;
 import com.acme.surfswap.repositories.OwnerRepository;
 import com.acme.surfswap.repositories.SurfboardRepository;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class SurfboardServiceImplTest {
@@ -23,7 +22,7 @@ public class SurfboardServiceImplTest {
     SurfboardRepository surfboardRepository;
     OwnerRepository ownerRepository;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
