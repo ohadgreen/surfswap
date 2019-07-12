@@ -11,11 +11,9 @@ import java.util.Set;
 @Service
 public class OwnerServiceImpl implements OwnerService {
     private final OwnerRepository ownerRepository;
-    private final SurfboardRepository surfboardRepository;
 
     public OwnerServiceImpl(OwnerRepository ownerRepository, SurfboardRepository surfboardRepository) {
         this.ownerRepository = ownerRepository;
-        this.surfboardRepository = surfboardRepository;
     }
 
     @Override
