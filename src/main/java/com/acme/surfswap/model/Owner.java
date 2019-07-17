@@ -9,17 +9,18 @@ import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
+@Builder
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "owners")
 public class Owner extends Person {
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Surfboard> surfboards = new HashSet<>();
 
+    @Builder
     public Owner(String firstName, String lastName, String phoneNumber) {
         super(firstName, lastName, phoneNumber);
     }

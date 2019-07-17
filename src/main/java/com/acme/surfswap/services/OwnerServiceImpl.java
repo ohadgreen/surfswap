@@ -2,18 +2,26 @@ package com.acme.surfswap.services;
 
 import com.acme.surfswap.model.Owner;
 import com.acme.surfswap.repositories.OwnerRepository;
-import com.acme.surfswap.repositories.SurfboardRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class OwnerServiceImpl implements OwnerService {
+
     private final OwnerRepository ownerRepository;
 
-    public OwnerServiceImpl(OwnerRepository ownerRepository, SurfboardRepository surfboardRepository) {
+    public OwnerServiceImpl(OwnerRepository ownerRepository) {
         this.ownerRepository = ownerRepository;
+    }
+
+    @Override
+    public Set<Owner> findAll() {
+        Set<Owner> ownerSet = new HashSet<>();
+        ownerRepository.findAll().forEach(ownerSet::add);
+        return ownerSet;
     }
 
     @Override
@@ -22,10 +30,11 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public Set<Owner> findAll() {
-        Set<Owner> ownerSet = new HashSet<>();
-        ownerRepository.findAll().forEach(ownerSet::add);
-        return ownerSet;
+    public Set<Owner> findAllByLastNameLike(String lastName) {
+        return this.findAll()
+                .stream()
+                .filter(owner -> owner.getLastName().toLowerCase().contains(lastName.toLowerCase()))
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -47,4 +56,6 @@ public class OwnerServiceImpl implements OwnerService {
     public void deleteById(Long aLong) {
         ownerRepository.deleteById(aLong);
     }
+
+
 }
