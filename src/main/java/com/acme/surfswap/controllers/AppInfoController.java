@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AppInfoController {
-    @Value("${app.name}")
+    @Value("${app.name:surfSwap_default}")
     private String appName;
-    @Value("${app.version}")
+    @Value("${app.version:1.0}")
     private String appVersion;
 
     @GetMapping("api/appstatus")
