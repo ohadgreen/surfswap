@@ -2,7 +2,7 @@ branch-defaults:
   master:
     environment: ${CIRCLE_BRANCH}-surfswap-be
 global:
-  application_name: surfswap
+  application_name: ${CIRCLE_BRANCH}-surfswap-be
   default_ec2_keyname: XXXXXX
   default_platform: Java 8 running on 64bit Amazon Linux/2.9.1
   default_region: eu-central-1
