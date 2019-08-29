@@ -38,23 +38,23 @@ jobs: # a collection of steps
             - surfswap-0.0.1-SNAPSHOT.jar
             - version.txt
 
-      deploy:
-        docker:
-          - image: circleci/python:2.7
-        steps:
-          - attach_workspace:
-              at: /tmp/workspace
+    deploy:
+      docker:
+        - image: circleci/python:2.7
+      steps:
+        - attach_workspace:
+            at: /tmp/workspace
 
-          - run: sudo pip install awscli
+        - run: sudo pip install awscli
 
-          - run: |
-              eb deploy surfswap
-      workflows:
-        version: 2
-        build:
-          jobs:
-            - deploy:
-                filters:
-                  branches:
-                    only:
-                      - master
+        - run: |
+            eb deploy surfswap
+    workflows:
+      version: 2
+      build:
+        jobs:
+          - deploy:
+              filters:
+                branches:
+                  only:
+                    - master
