@@ -43,6 +43,9 @@ jobs: # a collection of steps
       - attach_workspace:
           at: /tmp/workspace
 
+      - run: # test what branch we're on.
+          name: What branch am I on?
+          command: echo "on branch ${CIRCLE_BRANCH}"
       - run:
           name: installing deployment dependencies
           working_directory: /
@@ -50,15 +53,11 @@ jobs: # a collection of steps
             sudo apt-get -y -qq update
             sudo apt-get install python-pip python-dev build-essential
             sudo pip install --upgrade setuptools
-            sudo pip install awscli --upgrade
+            sudo pip install awsebcli --upgrade
 
       - run:
           name: deploying
-          command: |
-            PROJECT_VERSION="1.1"
-            echo "project version ${PROJECT_VERSION}"
-            aws s3 cp /tmp/workspace/surfswap-0.0.1-SNAPSHOT.jar s3://code-deploy-ogreen/${PROJECT_VERSION}/surfswap-0.0.1-SNAPSHOT.jar --region eu-central-1
-            aws elasticbeanstalk create-application-version --application-name surfswap --version-label ${PROJECT_VERSION} --source-bundle S3Bucket="code-deploy-ogreen",S3Key="${PROJECT_VERSION}/surfswap-0.0.1-SNAPSHOT.jar" --region eu-central-1
+          command: eb deploy $CIRCLE_BRANCH-my-application
 workflows:
   version: 2
   wf1:
