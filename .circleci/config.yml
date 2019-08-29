@@ -50,11 +50,14 @@ jobs: # a collection of steps
             sudo apt-get -y -qq update
             sudo apt-get install python-pip python-dev build-essential
             sudo pip install --upgrade setuptools
-            sudo pip install awsebcli --upgrade
+            sudo pip install awscli --upgrade
 
       - run:
           name: deploying
-          command: eb deploy surfswap
+          command: |
+            export PROJECT_VERSION=$(cat /tmp/workspace/version.txt)
+            aws s3 cp /tmp/workspace/surfswap-0.0.1-SNAPSHOT.jar s3://code-deploy-ogreen/${PROJECT_VERSION}/surfswap-0.0.1-SNAPSHOT.jar --region eu-central-1
+            aws elasticbeanstalk create-application-version --application-name surfswap --version-label ${PROJECT_VERSION} --source-bundle S3Bucket="code-deploy-ogreen",S3Key="${PROJECT_VERSION}/surfswap-0.0.1-SNAPSHOT.jar" --region eu-central-1
 workflows:
   version: 2
   wf1:
