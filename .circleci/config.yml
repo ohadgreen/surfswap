@@ -40,9 +40,6 @@ jobs: # a collection of steps
     docker:
       - image: circleci/python:2.7
     steps:
-      - attach_workspace:
-          at: /tmp/workspace
-
       - run: # test what branch we're on.
           name: What branch am I on?
           command: echo "on branch ${CIRCLE_BRANCH}"
@@ -54,10 +51,9 @@ jobs: # a collection of steps
             sudo apt-get install python-pip python-dev build-essential
             sudo pip install --upgrade setuptools
             sudo pip install awsebcli --upgrade
-
       - run:
           name: deploying
-          command: eb deploy $CIRCLE_BRANCH-my-application
+          command: eb deploy $CIRCLE_BRANCH-surfswap-be
 workflows:
   version: 2
   wf1:
