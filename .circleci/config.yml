@@ -1,6 +1,6 @@
 version: 2 # use CircleCI 2.0
 jobs: # a collection of steps
-  build: # runs not using Workflows must have a `build` job as entry point
+  test: # runs not using Workflows must have a `build` job as entry point
 
     working_directory: ~/surfswap # directory where steps will run
 
@@ -36,7 +36,6 @@ jobs: # a collection of steps
           paths:
             - surfswap-0.0.1-SNAPSHOT.jar
             - version.txt
-
   deploy:
     docker:
       - image: circleci/python:2.7
@@ -44,15 +43,23 @@ jobs: # a collection of steps
       - attach_workspace:
           at: /tmp/workspace
 
-      - run: sudo pip install awscli
+      - run:
+          name: installing deployment dependencies
+          working_directory: /
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get install python-pip python-dev build-essential
+            sudo pip install --upgrade setuptools
+            sudo pip install awsebcli --upgrade
 
-      - run: |
-          eb deploy surfswap
+      - run:
+          name: deploying
+          command: eb deploy surfswap
 workflows:
   version: 2
   wf1:
     jobs:
-      - build
+      - test
       - deploy:
           requires:
-            - build
+            - test
