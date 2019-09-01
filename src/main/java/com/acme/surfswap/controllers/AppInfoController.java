@@ -17,7 +17,7 @@ public class AppInfoController {
         AppInfo appInfo = new AppInfo();
         appInfo.setName(appName);
         appInfo.setVersion(appVersion);
-        appInfo.setReleaseNotes("hello surfers");
+        appInfo.setReleaseNotes("hello surfers ;-)");
         return appInfo;
     }
 }
