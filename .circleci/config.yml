@@ -56,8 +56,10 @@ jobs: # a collection of steps
           command: eb init --platform tomcat-8-java-8 --region eu-central-1 ${CIRCLE_BRANCH}-surfswap-be
       - run:
           name: deploying
+          working_directory: ~/surfswap
           command: |
-            echo "${CIRCLE_BRANCH}-surfswap-be"
+            pwd
+            ls
             eb status
             eb deploy ${CIRCLE_BRANCH}-surfswap-be
 workflows:
