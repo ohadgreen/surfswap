@@ -52,16 +52,13 @@ jobs: # a collection of steps
             sudo pip install --upgrade setuptools
             sudo pip install awsebcli --upgrade
       - run:
-          name: eb init
-          command: eb init --platform tomcat-8-java-8 --region eu-central-1 ${CIRCLE_BRANCH}-surfswap-be
-      - run:
           name: deploying
-          working_directory: ~/surfswap
+          working_directory: ~/surfswap/target
           command: |
             pwd
-            ls
-            eb status
+            eb init --platform tomcat-8-java-8 --region eu-central-1 ${CIRCLE_BRANCH}-surfswap-be
             eb deploy ${CIRCLE_BRANCH}-surfswap-be
+            eb status
 workflows:
   version: 2
   wf1:
