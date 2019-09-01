@@ -62,8 +62,9 @@ jobs: # a collection of steps
       - run:
           name: deploying
           command: |
-            eb init --platform tomcat-8-java-8 --region eu-central-1 --version-label 1.0.0 ${CIRCLE_BRANCH}-surfswap-be
-            eb deploy
+            eb init --platform tomcat-8-java-8 --region eu-central-1
+            eb create ${CIRCLE_BRANCH}-surfswap-be --single || true
+            eb deploy ${CIRCLE_BRANCH}-surfswap-be
             eb status
 workflows:
   version: 2
