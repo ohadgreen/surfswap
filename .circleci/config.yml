@@ -47,8 +47,10 @@ jobs: # a collection of steps
     docker:
       - image: circleci/python:2.7
     steps:
-      - checkout
-      - run: # test what branch we're on.
+      - attach_workspace:
+            # Must be absolute path or relative path from working_directory
+            at: ~/surfswap/target
+      - run: # what branch we're on.
           name: What branch am I on?
           command: echo "on branch ${CIRCLE_BRANCH}"
       - run:
