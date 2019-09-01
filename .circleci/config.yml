@@ -40,6 +40,7 @@ jobs: # a collection of steps
     docker:
       - image: circleci/python:2.7
     steps:
+      - checkout
       - run: # test what branch we're on.
           name: What branch am I on?
           command: echo "on branch ${CIRCLE_BRANCH}"
@@ -55,6 +56,7 @@ jobs: # a collection of steps
           name: deploying
           working_directory: ~/surfswap/target
           command: |
+            cd /home/circleci/surfswap/target
             pwd
             ls
             eb init --platform tomcat-8-java-8 --region eu-central-1 ${CIRCLE_BRANCH}-surfswap-be
