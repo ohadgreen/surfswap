@@ -53,7 +53,7 @@ jobs: # a collection of steps
           command: echo "on branch ${CIRCLE_BRANCH}"
       - run:
           name: installing deployment dependencies
-          working_directory: /
+          working_directory: ~/surfswap/target
           command: |
             sudo apt-get -y -qq update
             sudo apt-get install python-pip python-dev build-essential
@@ -61,13 +61,9 @@ jobs: # a collection of steps
             sudo pip install awsebcli --upgrade
       - run:
           name: deploying
-          working_directory: ~/surfswap/target
           command: |
-            cd /home/circleci/surfswap/target
-            pwd
-            ls
             eb init --platform tomcat-8-java-8 --region eu-central-1 --version-label 1.0.0 ${CIRCLE_BRANCH}-surfswap-be
-            eb deploy ${CIRCLE_BRANCH}-surfswap-be
+            eb deploy
             eb status
 workflows:
   version: 2
