@@ -36,6 +36,13 @@ jobs: # a collection of steps
           paths:
             - surfswap-0.0.1-SNAPSHOT.jar
             - version.txt
+
+      - run:
+          name: verify artifact
+          working_directory: ~/surfswap/target
+          command: |
+            pwd
+            ls
   deploy:
     docker:
       - image: circleci/python:2.7
@@ -59,7 +66,7 @@ jobs: # a collection of steps
             cd /home/circleci/surfswap/target
             pwd
             ls
-            eb init --platform tomcat-8-java-8 --region eu-central-1 ${CIRCLE_BRANCH}-surfswap-be
+            eb init --platform tomcat-8-java-8 --region eu-central-1 --version-label 1.0.0 ${CIRCLE_BRANCH}-surfswap-be
             eb deploy ${CIRCLE_BRANCH}-surfswap-be
             eb status
 workflows:
