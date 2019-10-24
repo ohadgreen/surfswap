@@ -14,6 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 @Table(name = "surfboards")
 public class Surfboard extends Item {
     @Enumerated(value = EnumType.STRING)

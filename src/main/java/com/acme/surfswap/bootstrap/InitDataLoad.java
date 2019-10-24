@@ -8,9 +8,11 @@ import com.acme.surfswap.model.Surfboard;
 import com.acme.surfswap.services.OwnerService;
 import com.acme.surfswap.services.StoreService;
 import com.acme.surfswap.services.SurfboardService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class InitDataLoad implements CommandLineRunner
 {
@@ -28,6 +30,7 @@ public class InitDataLoad implements CommandLineRunner
     public void run(String... args) throws Exception {
         int storeCount = storeService.findAll().size();
         if (storeCount == 0) {
+            log.debug("initiating data");
             initData();
         }
     }
