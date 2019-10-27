@@ -65,13 +65,15 @@ jobs: # a collection of steps
           name: deploying
           command: |
             eb init --platform tomcat-8-java-8 --region eu-central-1
-            eb deploy ${CIRCLE_BRANCH}-surfswap-be
+            eb deploy ${CIRCLE_BRANCH}-surfswap-backend
             eb status
 workflows:
   version: 2
-  wf1:
+  build:
     jobs:
       - test
       - deploy:
-          requires:
-            - test
+          filters:
+            branches:
+              only:
+                - master
