@@ -64,6 +64,8 @@ jobs: # a collection of steps
       - run:
           name: deploying
           command: |
+            pwd
+            ls
             eb init --platform tomcat-8-java-8 --region eu-central-1
             eb deploy ${CIRCLE_BRANCH}-surfswap-backend
             eb status
