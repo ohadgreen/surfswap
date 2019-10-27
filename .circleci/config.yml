@@ -49,13 +49,13 @@ jobs: # a collection of steps
     steps:
       - attach_workspace:
             # Must be absolute path or relative path from working_directory
-            at: ~/surfswap/target
+            at: /home/circleci/surfswap/target/
       - run: # what branch we're on.
           name: What branch am I on?
           command: echo "on branch ${CIRCLE_BRANCH}"
       - run:
           name: installing deployment dependencies
-          working_directory: ~/surfswap/target
+          working_directory: /home/circleci/surfswap/target/
           command: |
             sudo apt-get -y -qq update
             sudo apt-get install python-pip python-dev build-essential
