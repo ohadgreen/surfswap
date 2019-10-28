@@ -66,7 +66,7 @@ jobs:
           name: Deploying
           command: |
             echo "$AWS_ACCESS_KEY_ID"
-            eb init surfswap_bebe -p "Java 8 with Tomcat 8.5 version 3.3.0" --region "eu-central-1"
+            eb init surfswap_bebe -p "64bit Amazon Linux 2018.03 v3.3.0 running Tomcat 8.5 Java 8" --region "eu-central-1"
             eb create circleci-env --single || true
             eb setenv SERVER_PORT=5000
             eb deploy circleci-env
