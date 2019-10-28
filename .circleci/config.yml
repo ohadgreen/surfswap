@@ -1,81 +1,86 @@
-version: 2 # use CircleCI 2.0
-jobs: # a collection of steps
-  test: # runs not using Workflows must have a `build` job as entry point
+Version: 2
+#
+# Jobs are a collection of Steps. All of the steps in the job are executed in a single unit which consumes a CircleCI container from your plan while it’s running.
+# Job: "maven-build" job test and package demo application with Maven, persist JAR in workspace and store it as Artefacts
+# Job: "aws-deploy" job get binary from attached workspace and deploy to AWS
+# https://circleci.com/docs/2.0/jobs-steps/
+#
+jobs:
+  # Job to Build Maven application
+  maven-build:
 
-    working_directory: ~/surfswap # directory where steps will run
+    # specify the version you desire here
+    docker:
+      - image: maven
 
-    docker: # run the steps with Docker
-      - image: circleci/openjdk:8u171-jdk # ...with this image as the primary container; this is where all `steps` will run
+    working_directory: ~/repo
 
-    steps: # a collection of executable commands
-      - checkout # check out source code to working directory
+    environment:
+      # Customize the JVM maximum heap limit
+      MAVEN_OPTS: -Xmx3200m
 
-      - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
-          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
-          key: surfswap-{{ checksum "pom.xml" }}
+    steps:
 
-      - run: mvn dependency:go-offline # gets the project dependencies
+      - checkout
 
-      - save_cache: # saves the project dependencies
+      # Download and cache dependencies
+      - restore_cache:
+          key: demo-{{ checksum "pom.xml" }}
+
+      - run: mvn dependency:go-offline
+
+      - save_cache:
           paths:
             - ~/.m2
-          key: surfswap-{{ checksum "pom.xml" }}
+          key: demo-{{ checksum "pom.xml" }}
 
-      - run: mvn package # run the actual tests
+      # Run maven commands
+      - run: mvn package
 
-      - store_test_results: # uploads the test metadata from the `target/surefire-reports` directory so that it can show up in the CircleCI dashboard.
-          # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+      # Store tests to compare builds
+      - store_test_results:
           path: target/surefire-reports
-
-      - store_artifacts: # store the uberjar as an artifact
-          # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
+      # Store artifacts on CircleCI internal repository
+      - store_artifacts:
           path: target/surfswap-0.0.1-SNAPSHOT.jar
 
+      # Persist the specified paths target/demo-1.0.jar) into the workspace for use in aws-deploy job.
       - persist_to_workspace:
-          root: target
+          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is taken to be the root directory of the workspace.
+          root: ~/repo/target
+          # Must be relative path from root
           paths:
             - surfswap-0.0.1-SNAPSHOT.jar
-            - version.txt
 
-      - run:
-          name: verify artifact
-          working_directory: ~/surfswap/target
-          command: |
-            pwd
-            ls
-  deploy:
+  # Job to Deploy spring-boot demo application to AWS BeanStalk
+  aws-deploy:
+    working_directory: ~/app
     docker:
-      - image: circleci/python:2.7
+      - image: ogreen/awscli-awsebcli
     steps:
       - attach_workspace:
-            # Must be absolute path or relative path from working_directory
-            at: /home/circleci/surfswap/target/
-      - run: # what branch we're on.
-          name: What branch am I on?
-          command: echo "on branch ${CIRCLE_BRANCH}"
+          # Must be absolute path or relative path from working_directory
+          at: ~/app/target
+
       - run:
-          name: installing deployment dependencies
-          working_directory: /home/circleci/surfswap/target/
+          name: Deploying
           command: |
-            sudo apt-get -y -qq update
-            sudo apt-get install python-pip python-dev build-essential
-            sudo pip install --upgrade setuptools
-            sudo pip install awsebcli --upgrade
-      - run:
-          name: deploying
-          command: |
-            pwd
-            ls
-            eb init --platform tomcat-8-java-8 --region eu-central-1
-            eb deploy ${CIRCLE_BRANCH}-surfswap-backend
+            echo "$AWS_ACCESS_KEY_ID"
+            eb init surfswap_bebe -p "64bit Amazon Linux 2017.09 v2.6.4 running Java 8" --region "eu-central-1"
+            eb create circleci-env --single || true
+            eb setenv SERVER_PORT=5000
+            eb deploy circleci-env
             eb status
+#
+# Workflows: A workflow is a set of rules for defining a collection of jobs and their run order.
+# In this demo, "aws-deploy" jobs is triggered only after the success of "maven-build" jobs
+# see https://circleci.com/docs/2.0/workflows/
+#
 workflows:
   version: 2
-  build:
+  workflow:
     jobs:
-      - test
-      - deploy:
-          filters:
-            branches:
-              only:
-                - master
+      - maven-build
+      - aws-deploy:
+          requires:
+            - maven-build
