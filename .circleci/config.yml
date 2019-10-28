@@ -56,7 +56,7 @@ jobs:
   aws-deploy:
     working_directory: ~/app
     docker:
-      - image: ogreen/awscli-awsebcli
+      - image: chriscamicas/awscli-awsebcli
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
