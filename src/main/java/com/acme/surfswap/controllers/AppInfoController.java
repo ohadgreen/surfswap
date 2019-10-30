@@ -18,6 +18,7 @@ public class AppInfoController {
         appInfo.setName(appName);
         appInfo.setVersion(appVersion);
         appInfo.setReleaseNotes("hello surfers ;-)");
+        appInfo.setReleaseDate("19-10-30 10");
         return appInfo;
     }
 }

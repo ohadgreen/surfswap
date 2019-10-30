@@ -1,7 +1,7 @@
 Version: 2
-#
+# https://www.gologic.ca/en/pipeline-circleci/
 # Jobs are a collection of Steps. All of the steps in the job are executed in a single unit which consumes a CircleCI container from your plan while it’s running.
-# Job: "maven-build" job test and package demo application with Maven, persist JAR in workspace and store it as Artefacts
+# Job: "maven-build" job test and package demo application with Maven, persist JAR in workspace and store it as Artifacts
 # Job: "aws-deploy" job get binary from attached workspace and deploy to AWS
 # https://circleci.com/docs/2.0/jobs-steps/
 #
@@ -25,14 +25,14 @@ jobs:
 
       # Download and cache dependencies
       - restore_cache:
-          key: demo-{{ checksum "pom.xml" }}
+          key: surfswap-{{ checksum "pom.xml" }}
 
       - run: mvn dependency:go-offline
 
       - save_cache:
           paths:
             - ~/.m2
-          key: demo-{{ checksum "pom.xml" }}
+          key: surfswap-{{ checksum "pom.xml" }}
 
       # Run maven commands
       - run: mvn package
