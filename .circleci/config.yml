@@ -20,14 +20,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - surfswap-{{ checksum "pom.xml" }}
+            - surfswap-be-{{ checksum "pom.xml" }}
 
       - run: mvn dependency:go-offline
 
       - save_cache:
           paths:
             - ~/.m2
-          key: surfswap-{{ checksum "pom.xml" }}
+          key: surfswap-be-{{ checksum "pom.xml" }}
 
       # package into a jar
       - run: mvn clean package
