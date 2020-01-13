@@ -1,0 +1,41 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:11.0.1-jdk
+
+    working_directory: ~/surfswap
+
+    steps:
+      # git pull
+      - checkout
+
+      # setup testing env
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run:
+          name: Login to DockerHub
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - surfswap-be-{{ checksum "pom.xml" }}
+
+      - run: mvn dependency:go-offline
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: surfswap-be-{{ checksum "pom.xml" }}
+
+      # package into a jar
+      - run: mvn clean package
+
+      # build and push docker image to docker hub
+      - run: mvn clean compile jib:build -Dimage=greengodoc/surfswap-be:$CIRCLE_BUILD_NUM
+
+      # store raw contents of src code
+      - store_artifacts:
+          path: target/classes
+          destination: surfswap
