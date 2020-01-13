@@ -1,7 +1,6 @@
 package com.acme.surfswap.services;
 
 import com.acme.surfswap.model.Surfboard;
-import com.acme.surfswap.repositories.OwnerRepository;
 import com.acme.surfswap.repositories.SurfboardRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,13 +19,13 @@ public class SurfboardServiceImplTest {
 
     @Mock
     SurfboardRepository surfboardRepository;
-    OwnerRepository ownerRepository;
+    OwnerServiceImpl ownerService;
 
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        surfboardService = new SurfboardServiceImpl(surfboardRepository, ownerRepository);
+        surfboardService = new SurfboardServiceImpl(surfboardRepository, ownerService);
     }
     @Test
     public void getSurfboardSet() {

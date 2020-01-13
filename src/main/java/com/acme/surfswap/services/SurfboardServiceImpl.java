@@ -1,7 +1,7 @@
 package com.acme.surfswap.services;
 
+import com.acme.surfswap.model.Owner;
 import com.acme.surfswap.model.Surfboard;
-import com.acme.surfswap.repositories.OwnerRepository;
 import com.acme.surfswap.repositories.SurfboardRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +12,11 @@ import java.util.stream.StreamSupport;
 @Service
 public class SurfboardServiceImpl implements SurfboardService {
     private final SurfboardRepository surfboardRepository;
-    private final OwnerRepository ownerRepository;
+    private final OwnerService ownerService;
 
-    public SurfboardServiceImpl(SurfboardRepository surfboardRepository, OwnerRepository ownerRepository) {
+    public SurfboardServiceImpl(SurfboardRepository surfboardRepository, OwnerService ownerService) {
         this.surfboardRepository = surfboardRepository;
-        this.ownerRepository = ownerRepository;
+        this.ownerService = ownerService;
     }
 
     @Override
@@ -56,6 +56,10 @@ public class SurfboardServiceImpl implements SurfboardService {
     }
 
     public Set<Surfboard> findByOwner(Long ownerId) {
-        return ownerRepository.findById(ownerId).get().getSurfboards();
+        Owner boardOwner = ownerService.findById(ownerId);
+        if (boardOwner != null) {
+            return boardOwner.getSurfboards();
+        }
+        return null;
     }
 }

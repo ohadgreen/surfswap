@@ -51,13 +51,13 @@ public class SurfboardControllerTest {
 
     @Test
     public void getAllSurfboardFromController() {
-        assertEquals(2, surfboardController.allBoards().size());
+        assertEquals(2, surfboardController.allBoards().getBody().size());
         verify(surfboardService, times(1)).findAll();
     }
 
     @Test
     public void getSingleSurfboardById() {
-        assertEquals("BG", surfboardController.boardById(1L).getBrand());
+        assertEquals("BG", surfboardController.boardById(1L).getBody().getBrand());
     }
 
     @Test

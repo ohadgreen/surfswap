@@ -3,6 +3,9 @@ package com.acme.surfswap.controllers;
 import com.acme.surfswap.model.Surfboard;
 import com.acme.surfswap.services.SurfboardServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,39 +24,42 @@ public class SurfboardController {
     }
 
     @GetMapping("/all")
-    public Set<Surfboard> allBoards() {
-        return surfboardService.findAll();
+    public ResponseEntity<Set<Surfboard>> allBoards() {
+        return new ResponseEntity<>(surfboardService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/bystore/{storeid}")
-    public Set<Surfboard> boardsByStore(@PathVariable long storeid) {
+    public ResponseEntity<Set<Surfboard>> boardsByStore(@PathVariable long storeid) {
         log.debug("storeid: " + storeid );
-        return surfboardService.findByStore(storeid);
+        return new ResponseEntity<>(surfboardService.findByStore(storeid), HttpStatus.OK);
     }
 
     @GetMapping("/byowner")
-    public Set<Surfboard> boardsByOwner(@RequestParam("ownerId") Long ownerId) {
+    public ResponseEntity<Set<Surfboard>> boardsByOwner(@RequestParam("ownerId") Long ownerId) {
         log.debug("Owner id: " + ownerId );
-        return surfboardService.findByOwner(ownerId);
+        return new ResponseEntity<>(surfboardService.findByOwner(ownerId), HttpStatus.OK);
     }
 
     @GetMapping("/byid")
-    public Surfboard boardById(@RequestParam("boardId") Long boardId) {
+    public ResponseEntity<Surfboard> boardById(@RequestParam("boardId") Long boardId) {
         log.debug("board id: " + boardId );
-        return surfboardService.findById(boardId);
+        return new ResponseEntity<>(surfboardService.findById(boardId), HttpStatus.OK);
     }
 
     @PostMapping("/new")
-    public Long saveNewBoard(@Valid Surfboard surfboard) {
+    public ResponseEntity<Long> saveNewBoard(@Valid Surfboard surfboard) {
         log.debug("new board: " + surfboard.toString());
         Surfboard savedSurfboard = surfboardService.save(surfboard);
-        return savedSurfboard.getId();
+        if (savedSurfboard != null) {
+            return new ResponseEntity<>(savedSurfboard.getId(), HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/deleteById")
-    public String deleteBoard(Long id) {
+    public ResponseEntity<HttpStatus> deleteBoard(Long id) {
         surfboardService.deleteById(id);
-        return "board deleted";
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/")

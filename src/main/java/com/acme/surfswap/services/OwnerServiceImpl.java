@@ -56,6 +56,4 @@ public class OwnerServiceImpl implements OwnerService {
     public void deleteById(Long aLong) {
         ownerRepository.deleteById(aLong);
     }
-
-
 }
