@@ -14,23 +14,22 @@ class DateAndTimeTest {
     @Test
     void dateFromTimestamp() {
         Date date = DateAndTime.dateFromTimestamp(1366902000);
-        System.out.println("date = " + date);
         assertNotNull(date);
     }
 
     @Test
     void hourFromTimestamp() {
         Date date = DateAndTime.dateFromTimestamp(1366902000);
-        System.out.println("date = " + date);
+//        System.out.println("date = " + date);
         assertNotNull(date);
 
         SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = simpleDate.format(date);
-        System.out.println("formattedDate = " + formattedDate);
+//        System.out.println("formattedDate = " + formattedDate);
 
         SimpleDateFormat simpleHour = new SimpleDateFormat("HH");
         String formattedHour = simpleHour.format(date);
-        System.out.println("formattedHour = " + formattedHour);
+//        System.out.println("formattedHour = " + formattedHour);
 
         assertEquals("18", formattedHour);
     }
@@ -38,10 +37,10 @@ class DateAndTimeTest {
     @Test
     void currentDateFromTimestamp() {
         Date date2020 = DateAndTime.dateFromTimestamp(1581499964);
-        System.out.println("date2020 = " + date2020);
+//        System.out.println("date2020 = " + date2020);
         SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String formattedDate = jdf.format(date2020);
-        System.out.println("formattedDate = " + formattedDate);
+//        System.out.println("formattedDate = " + formattedDate);
 
         assertNotNull(date2020);
     }
@@ -54,20 +53,6 @@ class DateAndTimeTest {
         Date date = new Date();
         date.setTime(0L);
         assertEquals(date, zeroDate);
-    }
-
-    @Test
-    void parseLocalDate() {
-        LocalDateTime localDateTime = LocalDateTime.now();
-        System.out.println("localDateTime = " + localDateTime);
-
-        int hour = localDateTime.getHour();
-        System.out.println("hour = " + hour);
-        assertEquals(14, hour);
-
-        int dayOfMonth = localDateTime.getDayOfMonth();
-        System.out.println("dayOfMonth = " + dayOfMonth);
-        assertEquals(12, dayOfMonth);
     }
 
     @Test
@@ -90,8 +75,7 @@ class DateAndTimeTest {
                         .dayOfWeekNum(accumulateHourDateTime.getDayOfWeek().getValue())
                         .hour(accumulateHourDateTime.getHour())
                         .build();
-
-                System.out.println(timeSlot.toString());
+//                System.out.println(timeSlot.toString());
 
             }
         }
