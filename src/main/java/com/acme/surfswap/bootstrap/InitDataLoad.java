@@ -1,16 +1,15 @@
 package com.acme.surfswap.bootstrap;
 
 import com.acme.surfswap.enums.SurfboardType;
-import com.acme.surfswap.model.Owner;
-import com.acme.surfswap.model.Store;
-import com.acme.surfswap.model.StoreAdmin;
-import com.acme.surfswap.model.Surfboard;
+import com.acme.surfswap.model.*;
+import com.acme.surfswap.repositories.TimeSlotRepository;
 import com.acme.surfswap.services.OwnerService;
 import com.acme.surfswap.services.StoreService;
-import com.acme.surfswap.services.SurfboardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Slf4j
 @Component
@@ -18,24 +17,29 @@ public class InitDataLoad implements CommandLineRunner
 {
     private final StoreService storeService;
     private final OwnerService ownerService;
-    private final SurfboardService surfboardService;
+    private final TimeSlotRepository timeSlotRepository;
 
-    public InitDataLoad(StoreService storeService, OwnerService ownerService, SurfboardService surfboardService) {
+    public InitDataLoad(StoreService storeService, OwnerService ownerService, TimeSlotRepository timeSlotRepository) {
         this.storeService = storeService;
         this.ownerService = ownerService;
-        this.surfboardService = surfboardService;
+        this.timeSlotRepository = timeSlotRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
         int storeCount = storeService.findAll().size();
         if (storeCount == 0) {
-            log.debug("initiating data");
-            initData();
+            initSurfboardsData();
+        }
+
+        boolean timeSlotsExist = timeSlotRepository.findAll().iterator().hasNext();
+        if (!timeSlotsExist) {
+            this.initTimeSlots();
         }
     }
 
-    private void initData() {
+    private void initSurfboardsData() {
+        log.debug("initiating surfboards data");
         Store acadia = new Store("Acadia", "1 Hayam St.");
         StoreAdmin acadiaAdmin = new StoreAdmin("Dani", "Acadia", "333-4567");
         acadia.addStoreAdmin(acadiaAdmin);
@@ -61,5 +65,28 @@ public class InitDataLoad implements CommandLineRunner
         ownerService.save(owner3);
 
         storeService.save(acadia);
+    }
+
+    private void initTimeSlots() {
+        LocalDateTime startDateTime = LocalDateTime.of(2020, 2, 13, 0, 0, 0);
+        System.out.println("initiating time slots from: " + startDateTime);
+
+        for (int i = 0; i < 3; i++) {
+            for (int h = 0; h < 24; h++) {
+                LocalDateTime accumulateHourDateTime = startDateTime.plusDays(i).plusHours(h);
+                TimeSlot timeSlot = TimeSlot.builder()
+                        .localDateTime(accumulateHourDateTime)
+                        .timeSlotStart(accumulateHourDateTime.toLocalTime())
+                        .timeSlotEnd(accumulateHourDateTime.plusHours(1).toLocalTime())
+                        .year(accumulateHourDateTime.getYear())
+                        .month(accumulateHourDateTime.getMonthValue())
+                        .dayOfMonth(accumulateHourDateTime.getDayOfMonth())
+                        .dayOfWeekNum(accumulateHourDateTime.getDayOfWeek().getValue())
+                        .hour(accumulateHourDateTime.getHour())
+                        .build();
+
+                timeSlotRepository.save(timeSlot);
+            }
+        }
     }
 }
