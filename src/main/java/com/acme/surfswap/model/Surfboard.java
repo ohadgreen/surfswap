@@ -25,6 +25,7 @@ public class Surfboard extends Item {
     private double width;
     private double thickness;
     private double volume;
+    private boolean privateUse;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
@@ -36,7 +37,7 @@ public class Surfboard extends Item {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    public Surfboard(SurfboardType surfboardType, String brand, String model, double length, double width, double thickness, double volume) {
+    public Surfboard(SurfboardType surfboardType, String brand, String model, double length, double width, double thickness, double volume, boolean privateUse) {
         this.surfboardType = surfboardType;
         this.brand = brand;
         this.model = model;
@@ -44,5 +45,6 @@ public class Surfboard extends Item {
         this.width = width;
         this.thickness = thickness;
         this.volume = volume;
+        this.privateUse = privateUse;
     }
 }

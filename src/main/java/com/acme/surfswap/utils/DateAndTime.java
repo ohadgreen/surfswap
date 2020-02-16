@@ -1,7 +1,6 @@
 package com.acme.surfswap.utils;
 
-import com.acme.surfswap.model.BaseEntity;
-
+import java.time.Instant;
 import java.util.Date;
 
 public class DateAndTime {
@@ -14,7 +13,10 @@ public class DateAndTime {
             e.printStackTrace();
             date.setTime(0L);
         }
-
         return date;
+    }
+
+    public static Instant instantFromTimestamp(long timestamp) {
+        return Instant.ofEpochSecond(timestamp);
     }
 }
