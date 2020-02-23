@@ -1,5 +1,5 @@
 package com.acme.surfswap.enums;
 
 public enum ItemStatus {
-    GOOD, DAMAGED
+    GOOD, DAMAGED, OUT_OF_ORDER
 }

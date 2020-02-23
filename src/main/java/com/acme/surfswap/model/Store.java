@@ -17,11 +17,10 @@ public class Store extends BaseEntity {
     private String name;
     private String address;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "store")
     private Set<Surfboard> surfboards = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "stores_store_admins", joinColumns = @JoinColumn(name = "store_id"), inverseJoinColumns = @JoinColumn(name = "store_admin_id"))
+    @OneToMany(mappedBy = "store")
     private Set<StoreAdmin> storeAdmins = new HashSet<>();
 
     public Store(String name, String address) {

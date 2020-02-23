@@ -2,7 +2,6 @@ package com.acme.surfswap.model;
 
 import com.acme.surfswap.enums.ItemAvailability;
 import com.acme.surfswap.enums.ItemStatus;
-import com.acme.surfswap.enums.OwnershipType;
 import com.acme.surfswap.enums.SurfboardType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -17,7 +16,7 @@ import javax.persistence.*;
 @ToString
 @Table(name = "surfboards")
 public class Surfboard extends Item {
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private SurfboardType surfboardType;
     private String brand;
     private String model;
@@ -32,12 +31,14 @@ public class Surfboard extends Item {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "owner_id")
-    private Owner owner;
+//    @JsonIgnore
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "owner_id")
+//    private Owner owner;
 
-    public Surfboard(SurfboardType surfboardType, String brand, String model, double length, double width, double thickness, double volume, boolean privateUse) {
+    @Builder
+    public Surfboard(ItemAvailability itemAvailability, ItemStatus itemStatus, Integer ratePerHour,  SurfboardType surfboardType, String brand, String model, double length, double width, double thickness, double volume, boolean privateUse) {
+        super(itemAvailability, itemStatus, ratePerHour);
         this.surfboardType = surfboardType;
         this.brand = brand;
         this.model = model;
@@ -47,4 +48,5 @@ public class Surfboard extends Item {
         this.volume = volume;
         this.privateUse = privateUse;
     }
+
 }
