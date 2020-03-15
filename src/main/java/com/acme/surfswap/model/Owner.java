@@ -10,14 +10,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Builder
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "owners")
 public class Owner extends Person {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(/*cascade = CascadeType.ALL, mappedBy = "owner"*/)
     private Set<Surfboard> surfboards = new HashSet<>();
 
     @Builder

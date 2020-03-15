@@ -12,11 +12,9 @@ import java.util.stream.StreamSupport;
 @Service
 public class SurfboardServiceImpl implements SurfboardService {
     private final SurfboardRepository surfboardRepository;
-    private final OwnerService ownerService;
 
-    public SurfboardServiceImpl(SurfboardRepository surfboardRepository, OwnerService ownerService) {
+    public SurfboardServiceImpl(SurfboardRepository surfboardRepository) {
         this.surfboardRepository = surfboardRepository;
-        this.ownerService = ownerService;
     }
 
     @Override
@@ -56,10 +54,7 @@ public class SurfboardServiceImpl implements SurfboardService {
     }
 
     public Set<Surfboard> findByOwner(Long ownerId) {
-        Owner boardOwner = ownerService.findById(ownerId);
-        if (boardOwner != null) {
-            return boardOwner.getSurfboards();
-        }
-        return null;
+        return surfboardRepository.findByOwnerId(ownerId);
     }
+
 }

@@ -2,6 +2,7 @@ package com.acme.surfswap.model;
 
 import com.acme.surfswap.enums.ItemAvailability;
 import com.acme.surfswap.enums.ItemStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 public class Item extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "owner_id")
+    @JsonIgnore
     private Owner owner;
 
     @Enumerated(EnumType.STRING)

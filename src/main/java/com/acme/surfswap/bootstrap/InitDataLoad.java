@@ -7,15 +7,14 @@ import com.acme.surfswap.model.*;
 import com.acme.surfswap.repositories.TimeSlotRepository;
 import com.acme.surfswap.services.OwnerService;
 import com.acme.surfswap.services.StoreService;
+import com.acme.surfswap.services.SurfboardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Component
@@ -23,11 +22,13 @@ public class InitDataLoad implements CommandLineRunner
 {
     private final StoreService storeService;
     private final OwnerService ownerService;
+    private final SurfboardService surfboardService;
     private final TimeSlotRepository timeSlotRepository;
 
-    public InitDataLoad(StoreService storeService, OwnerService ownerService, TimeSlotRepository timeSlotRepository) {
+    public InitDataLoad(StoreService storeService, OwnerService ownerService, SurfboardService surfboardService, TimeSlotRepository timeSlotRepository) {
         this.storeService = storeService;
         this.ownerService = ownerService;
+        this.surfboardService = surfboardService;
         this.timeSlotRepository = timeSlotRepository;
     }
 
@@ -54,12 +55,16 @@ public class InitDataLoad implements CommandLineRunner
         Owner owner1 = new Owner("John", "Doe", "1234-5678");
         Owner owner2 = new Owner("Alice", "Armon", "1234-9876");
         Owner owner3 = new Owner("bob", "Brown", "1234-9999");
+        Owner owner4 = new Owner("Fake", "shake", "1234-9999");
 
 //        Surfboard longboard = new Surfboard(ItemAvailability.AVAILABLE, ItemStatus.GOOD, 10, SurfboardType.LONG_BOARD, "Hurley", "Ingleby", 9.0, 22, 2.5, 52.9 );
 //        Surfboard shortboard1 = new Surfboard(SurfboardType.SHORT_BOARD, "Al Merrick", "Happy", 5.6, 18.25, 2.2, 22.7 );
 //        Surfboard softboard = new Surfboard(SurfboardType.SOFT_BOARD, "De Hui", "Soft", 8.0, 30.0, 5.0, 62.2 );
 
         List<Surfboard> surfboards = initSurfboards();
+        for (Surfboard surfboard : surfboards) {
+            surfboardService.save(surfboard);
+        }
         owner1.addSurfboard(surfboards.get(0));
         acadia.addSurboard(surfboards.get(0));
 
@@ -74,6 +79,14 @@ public class InitDataLoad implements CommandLineRunner
         ownerService.save(owner3);
 
         storeService.save(acadia);
+
+        Surfboard surfboard4 = surfboards.get(3);
+        surfboard4.setOwner(owner4);
+//        Surfboard savedBoard4 = surfboardService.save(surfboards.get(3));
+//        System.out.println("savedBoard4 = " + savedBoard4);
+
+//        owner4.addSurfboard(savedBoard4);
+        ownerService.save(owner4);
     }
 
     private void initTimeSlots() {
@@ -139,10 +152,24 @@ public class InitDataLoad implements CommandLineRunner
                 .volume(48.5)
                 .build();
 
+        Surfboard board4 = Surfboard.builder()
+                .itemAvailability(ItemAvailability.AVAILABLE)
+                .itemStatus(ItemStatus.GOOD)
+                .ratePerHour(40)
+                .surfboardType(SurfboardType.FUN_BOARD)
+                .brand("ACME")
+                .model("fake board")
+                .length(7.8)
+                .width(23.0)
+                .thickness(3.0)
+                .volume(48.5)
+                .build();
+
         List<Surfboard> surfboardList = new ArrayList<>();
         surfboardList.add(shortBoard);
         surfboardList.add(funBoard);
         surfboardList.add(longBoard);
+        surfboardList.add(board4);
         return surfboardList;
     }
 }

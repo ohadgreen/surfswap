@@ -25,7 +25,7 @@ public class SurfboardServiceImplTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        surfboardService = new SurfboardServiceImpl(surfboardRepository, ownerService);
+        surfboardService = new SurfboardServiceImpl(surfboardRepository);
     }
     @Test
     public void getSurfboardSet() {

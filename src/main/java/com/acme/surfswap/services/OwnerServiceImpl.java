@@ -1,6 +1,7 @@
 package com.acme.surfswap.services;
 
 import com.acme.surfswap.model.Owner;
+import com.acme.surfswap.model.Surfboard;
 import com.acme.surfswap.repositories.OwnerRepository;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,9 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public Owner save(Owner owner) {
-        return ownerRepository.save(owner);
+        Owner savedOwner = ownerRepository.save(owner);
+
+        return savedOwner;
     }
 
     @Override
