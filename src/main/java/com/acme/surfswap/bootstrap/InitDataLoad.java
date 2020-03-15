@@ -57,36 +57,22 @@ public class InitDataLoad implements CommandLineRunner
         Owner owner3 = new Owner("bob", "Brown", "1234-9999");
         Owner owner4 = new Owner("Fake", "shake", "1234-9999");
 
-//        Surfboard longboard = new Surfboard(ItemAvailability.AVAILABLE, ItemStatus.GOOD, 10, SurfboardType.LONG_BOARD, "Hurley", "Ingleby", 9.0, 22, 2.5, 52.9 );
-//        Surfboard shortboard1 = new Surfboard(SurfboardType.SHORT_BOARD, "Al Merrick", "Happy", 5.6, 18.25, 2.2, 22.7 );
-//        Surfboard softboard = new Surfboard(SurfboardType.SOFT_BOARD, "De Hui", "Soft", 8.0, 30.0, 5.0, 62.2 );
-
         List<Surfboard> surfboards = initSurfboards();
-        for (Surfboard surfboard : surfboards) {
-            surfboardService.save(surfboard);
-        }
-        owner1.addSurfboard(surfboards.get(0));
-        acadia.addSurboard(surfboards.get(0));
 
-        owner2.addSurfboard(surfboards.get(1));
-        acadia.addSurboard(surfboards.get(1));
+        Surfboard surfboard1 = surfboards.get(0);
+        surfboard1.setOwner(owner1);
+        owner1.addSurfboard(surfboard1);
+        acadia.addSurfboard(surfboard1);
 
-        owner3.addSurfboard(surfboards.get(2));
-        acadia.addSurboard(surfboards.get(2));
+        Surfboard surfboard2 = surfboards.get(1);
+        surfboard1.setOwner(owner2);
+        owner1.addSurfboard(surfboard2);
+        acadia.addSurfboard(surfboard2);
 
         ownerService.save(owner1);
         ownerService.save(owner2);
-        ownerService.save(owner3);
 
         storeService.save(acadia);
-
-        Surfboard surfboard4 = surfboards.get(3);
-        surfboard4.setOwner(owner4);
-//        Surfboard savedBoard4 = surfboardService.save(surfboards.get(3));
-//        System.out.println("savedBoard4 = " + savedBoard4);
-
-//        owner4.addSurfboard(savedBoard4);
-        ownerService.save(owner4);
     }
 
     private void initTimeSlots() {

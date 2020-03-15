@@ -28,7 +28,7 @@ public class Store extends BaseEntity {
         this.address = address;
     }
 
-    public Store addSurboard(Surfboard surfboard) {
+    public Store addSurfboard(Surfboard surfboard) {
         surfboard.setStore(this);
         this.surfboards.add(surfboard);
         return this;

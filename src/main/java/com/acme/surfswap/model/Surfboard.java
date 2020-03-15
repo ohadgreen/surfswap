@@ -27,9 +27,13 @@ public class Surfboard extends Item {
     private boolean privateUse;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "owner_id")
+    Owner owner;
 
     @Builder
     public Surfboard(ItemAvailability itemAvailability, ItemStatus itemStatus, Integer ratePerHour,  SurfboardType surfboardType, String brand, String model, double length, double width, double thickness, double volume, boolean privateUse) {
