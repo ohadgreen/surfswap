@@ -16,7 +16,7 @@ import java.util.Set;
 @Entity
 @Table(name = "owners")
 public class Owner extends Person {
-    @OneToMany( mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.PERSIST)
     private Set<Surfboard> surfboards = new HashSet<>();
 
     @Builder

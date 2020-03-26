@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -31,9 +33,13 @@ public class Surfboard extends Item {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
-    Owner owner;
+    private Owner owner;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "surfboard")
+    private Set<Reservation> reservations = new HashSet<>();
 
     @Builder
     public Surfboard(ItemAvailability itemAvailability, ItemStatus itemStatus, Integer ratePerHour,  SurfboardType surfboardType, String brand, String model, double length, double width, double thickness, double volume, boolean privateUse) {

@@ -53,7 +53,7 @@ public class SurfboardController {
         if (savedSurfboard != null) {
             return new ResponseEntity<>(savedSurfboard.getId(), HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>((Long) null, HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/deleteById")

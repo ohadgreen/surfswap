@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,6 +16,14 @@ class DateAndTimeTest {
     void dateFromTimestamp() {
         Date date = DateAndTime.dateFromTimestamp(1366902000);
         assertNotNull(date);
+    }
+
+    @Test
+    void parseNowToLocalDateTime() {
+        LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
+        System.out.println("now = " + now);
+
+        assertEquals(0, now.getMinute());
     }
 
     @Test
@@ -58,12 +67,14 @@ class DateAndTimeTest {
     @Test
     void localDateAccumulate() {
         LocalDateTime startDateTime = LocalDateTime.of(2020, 2, 12, 0, 0, 0);
+        LocalDateTime now = LocalDateTime.now();
+
         System.out.println("startDateTime = " + startDateTime);
 
         for (int i = 0; i < 2; i++) {
 //            System.out.println(startDateTime.plusDays(i));
             for (int h = 0; h < 24; h++) {
-                LocalDateTime accumulateHourDateTime = startDateTime.plusDays(i).plusHours(h);
+                LocalDateTime accumulateHourDateTime = now.plusDays(i).plusHours(h);
                 System.out.println(accumulateHourDateTime);
                 TimeSlot timeSlot = TimeSlot.builder()
                         .localDateTime(accumulateHourDateTime)
@@ -75,7 +86,7 @@ class DateAndTimeTest {
                         .dayOfWeekNum(accumulateHourDateTime.getDayOfWeek().getValue())
                         .hour(accumulateHourDateTime.getHour())
                         .build();
-//                System.out.println(timeSlot.toString());
+                System.out.println(timeSlot.toString());
 
             }
         }

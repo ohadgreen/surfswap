@@ -4,6 +4,8 @@ import com.acme.surfswap.enums.ItemAvailability;
 import com.acme.surfswap.enums.ItemStatus;
 import com.acme.surfswap.enums.SurfboardType;
 import com.acme.surfswap.model.*;
+import com.acme.surfswap.repositories.CustomerRepository;
+import com.acme.surfswap.repositories.ReservationRepository;
 import com.acme.surfswap.repositories.TimeSlotRepository;
 import com.acme.surfswap.services.OwnerService;
 import com.acme.surfswap.services.StoreService;
@@ -13,6 +15,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +27,16 @@ public class InitDataLoad implements CommandLineRunner
     private final OwnerService ownerService;
     private final SurfboardService surfboardService;
     private final TimeSlotRepository timeSlotRepository;
+    private final CustomerRepository customerRepository;
+    private final ReservationRepository reservationRepository;
 
-    public InitDataLoad(StoreService storeService, OwnerService ownerService, SurfboardService surfboardService, TimeSlotRepository timeSlotRepository) {
+    public InitDataLoad(StoreService storeService, OwnerService ownerService, SurfboardService surfboardService, TimeSlotRepository timeSlotRepository, CustomerRepository customerRepository, ReservationRepository reservationRepository) {
         this.storeService = storeService;
         this.ownerService = ownerService;
         this.surfboardService = surfboardService;
         this.timeSlotRepository = timeSlotRepository;
+        this.customerRepository = customerRepository;
+        this.reservationRepository = reservationRepository;
     }
 
     @Override
@@ -43,6 +50,8 @@ public class InitDataLoad implements CommandLineRunner
         if (!timeSlotsExist) {
             this.initTimeSlots();
         }
+
+        initReservations();
     }
 
     private void initSurfboardsData() {
@@ -62,26 +71,51 @@ public class InitDataLoad implements CommandLineRunner
         Surfboard surfboard1 = surfboards.get(0);
         surfboard1.setOwner(owner1);
         owner1.addSurfboard(surfboard1);
-        acadia.addSurfboard(surfboard1);
 
         Surfboard surfboard2 = surfboards.get(1);
-        surfboard1.setOwner(owner2);
-        owner1.addSurfboard(surfboard2);
+        surfboard2.setOwner(owner2);
+        owner2.addSurfboard(surfboard2);
+
+        Surfboard surfboard3 = surfboards.get(2);
+        Surfboard surfboard4 = surfboards.get(3);
+        surfboard3.setOwner(owner3);
+        surfboard4.setOwner(owner3);
+        owner3.addSurfboard(surfboard3);
+        owner3.addSurfboard(surfboard4);
+
+        acadia.addSurfboard(surfboard1);
         acadia.addSurfboard(surfboard2);
+        acadia.addSurfboard(surfboard3);
+        acadia.addSurfboard(surfboard4);
 
         ownerService.save(owner1);
         ownerService.save(owner2);
+        ownerService.save(owner3);
+        ownerService.save(owner4);
 
         storeService.save(acadia);
     }
 
-    private void initTimeSlots() {
-        LocalDateTime startDateTime = LocalDateTime.of(2020, 2, 13, 0, 0, 0);
-        System.out.println("initiating time slots from: " + startDateTime);
+    private void initReservations() {
+        Surfboard surfboard1 = this.surfboardService.findById(1L);
+        Customer john = Customer.builder().firstName("John").lastName("Florence").phoneNumber("123456").build();
 
-        for (int i = 0; i < 3; i++) {
+        Reservation initReservation = new Reservation();
+        initReservation.setCustomer(john);
+        initReservation.setSurfboard(surfboard1);
+        initReservation.setActualStartTime(LocalDateTime.now());
+
+        customerRepository.save(john);
+        reservationRepository.save(initReservation);
+    }
+
+    private void initTimeSlots() {
+        LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
+        System.out.println("initiating time slots from: " + now);
+
+        for (int i = 0; i <= 7; i++) {
             for (int h = 0; h < 24; h++) {
-                LocalDateTime accumulateHourDateTime = startDateTime.plusDays(i).plusHours(h);
+                LocalDateTime accumulateHourDateTime = now.plusDays(i).plusHours(h);
                 TimeSlot timeSlot = TimeSlot.builder()
                         .localDateTime(accumulateHourDateTime)
                         .timeSlotStart(accumulateHourDateTime.toLocalTime())

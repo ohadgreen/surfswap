@@ -27,7 +27,7 @@ public class OwnerController {
     public ResponseEntity<Set<Owner>> allOwners() {
         Set<Owner> allOwners = ownerService.findAll();
         if (allOwners.isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>((Set<Owner>) null, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(allOwners, HttpStatus.OK);
     }
@@ -39,7 +39,7 @@ public class OwnerController {
         if (owner != null) {
             return new ResponseEntity<>(owner, HttpStatus.OK);
         }
-        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>((Owner) null, HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/new")
@@ -49,6 +49,6 @@ public class OwnerController {
         if (savedOwner != null) {
             return new ResponseEntity<>(savedOwner.getId(), HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>((Long) null, HttpStatus.BAD_REQUEST);
     }
 }
