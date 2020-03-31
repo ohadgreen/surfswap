@@ -2,15 +2,11 @@ package com.acme.surfswap.controllers;
 
 
 import com.acme.surfswap.model.Owner;
-import com.acme.surfswap.model.Surfboard;
 import com.acme.surfswap.services.OwnerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import javax.xml.ws.Response;
 import java.util.Set;
 
 @Slf4j

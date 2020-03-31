@@ -1,5 +1,6 @@
 package com.acme.surfswap.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.CascadeType;
@@ -15,7 +16,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "owners")
+@EqualsAndHashCode(callSuper = true)
 public class Owner extends Person {
+    @JsonIgnore
     @OneToMany(mappedBy = "owner", cascade = CascadeType.PERSIST)
     private Set<Surfboard> surfboards = new HashSet<>();
 

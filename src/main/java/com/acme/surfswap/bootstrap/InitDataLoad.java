@@ -11,6 +11,7 @@ import com.acme.surfswap.services.OwnerService;
 import com.acme.surfswap.services.StoreService;
 import com.acme.surfswap.services.SurfboardService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +30,8 @@ public class InitDataLoad implements CommandLineRunner
     private final TimeSlotRepository timeSlotRepository;
     private final CustomerRepository customerRepository;
     private final ReservationRepository reservationRepository;
+    @Value("${com.acme.surfswap.message}")
+    private String message;
 
     public InitDataLoad(StoreService storeService, OwnerService ownerService, SurfboardService surfboardService, TimeSlotRepository timeSlotRepository, CustomerRepository customerRepository, ReservationRepository reservationRepository) {
         this.storeService = storeService;
@@ -41,6 +44,8 @@ public class InitDataLoad implements CommandLineRunner
 
     @Override
     public void run(String... args) throws Exception {
+
+        log.info("data init env: " + message);
         int storeCount = storeService.findAll().size();
         if (storeCount == 0) {
             initSurfboardsData();
@@ -51,7 +56,10 @@ public class InitDataLoad implements CommandLineRunner
             this.initTimeSlots();
         }
 
-        initReservations();
+        boolean reservationsExist = reservationRepository.findAll().iterator().hasNext();
+        if (!reservationsExist) {
+            initReservations();
+        }
     }
 
     private void initSurfboardsData() {

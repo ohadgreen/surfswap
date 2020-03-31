@@ -32,9 +32,11 @@ class OwnerServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        ownerSet.add(new Owner("Kelly", "Slater", "1234"));
-        ownerSet.add(new Owner("John", "Florence", "1234"));
-        ownerSet.add(new Owner("TJ", "Slater", "1234"));
+        ownerSet.add(new Owner("John", "Florence", "4567"));
+        ownerSet.add(new Owner("TJ", "Slater", "9999"));
+
+        Owner ks = new Owner("Kelly", "Slater", "1234");
+        ownerSet.add(ks);
     }
 
     @Test
@@ -68,13 +70,24 @@ class OwnerServiceImplTest {
         when(ownerRepository.findAll()).thenReturn(ownerSet);
         Set<Owner> ownerSet = service.findAll();
         System.out.println(ownerSet);
-//        assertEquals(3, ownerSet.size());
+        assertEquals(3, ownerSet.size());
     }
 
     @Test
     public void testFindAllByLastNameLike() {
         when(ownerRepository.findAll()).thenReturn(ownerSet);
-//        assertEquals(2, service.findAllByLastNameLike(LAST_NAME).size());
+        Set<Owner> allByLastNameLike = service.findAllByLastNameLike(LAST_NAME);
+        System.out.println(allByLastNameLike);
+        assertEquals(2, allByLastNameLike.size());
+    }
+
+    @Test
+    void ownerSetAddTest() {
+        Set<Owner> myOwnerTestSet = new HashSet<>();
+        myOwnerTestSet.add(new Owner("John", "Florence", "4567"));
+        myOwnerTestSet.add(new Owner("KK", "TT", "123543"));
+
+        System.out.println(myOwnerTestSet.size());
     }
 
 }
