@@ -30,7 +30,7 @@ public class InitDataLoad implements CommandLineRunner
     private final TimeSlotRepository timeSlotRepository;
     private final CustomerRepository customerRepository;
     private final ReservationRepository reservationRepository;
-    @Value("${com.acme.surfswap.message}")
+    @Value("${com.acme.surfswap.message:default mode}")
     private String message;
 
     public InitDataLoad(StoreService storeService, OwnerService ownerService, SurfboardService surfboardService, TimeSlotRepository timeSlotRepository, CustomerRepository customerRepository, ReservationRepository reservationRepository) {
