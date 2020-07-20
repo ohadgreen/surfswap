@@ -1,6 +1,9 @@
 package com.acme.surfswap.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,7 +23,7 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name = "surfboard_id")
     private Surfboard surfboard;
 
-//    private TimeSlot startTime;
+    //    private TimeSlot startTime;
 //    private TimeSlot returnTime;
     private LocalDateTime actualStartTime;
     private LocalDateTime actualReturnTime;
